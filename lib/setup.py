@@ -108,6 +108,9 @@ def run_setup(with_binary):
               'thrift.protocol',
               'thrift.transport',
               'thrift.server',
+              'thrift.aio',
+              'thrift.aio.protocol',
+              'thrift.aio.transport',
           ],
           package_dir={'thrift': 'src'},
           classifiers=[
