@@ -349,7 +349,7 @@ protected:
     std::string keywords[] = { "False", "None", "True", "and", "as", "assert", "break", "class",
           "continue", "def", "del", "elif", "else", "except", "exec", "finally", "for", "from",
           "global", "if", "import", "in", "is", "lambda", "nonlocal", "not", "or", "pass", "print",
-          "raise", "return", "try", "while", "with", "yield" };
+          "raise", "return", "try", "while", "with", "yield", "async", "await" };
     return std::set<std::string>(keywords, keywords + sizeof(keywords)/sizeof(keywords[0]) );
   }
 };
