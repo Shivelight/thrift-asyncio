@@ -112,6 +112,9 @@ public:
         gen_zope_interface_ = true;
       } else if( iter->first.compare("asyncio") == 0) {
         gen_asyncio_ = true;
+        // In python 3 strings are utf-8 by default.
+        // Switching this to false to avoid useless checking.
+        gen_utf8strings_ = false;
       } else if( iter->first.compare("twisted") == 0) {
         gen_twisted_ = true;
         gen_zope_interface_ = true;
