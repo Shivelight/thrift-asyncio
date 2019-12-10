@@ -944,11 +944,16 @@ void t_py_generator::generate_py_struct_definition(ostream& out,
 void t_py_generator::generate_py_struct_reader(ostream& out, t_struct* tstruct) {
   const vector<t_field*>& fields = tstruct->get_members();
   vector<t_field*>::const_iterator f_iter;
-
-  if (is_immutable(tstruct)) {
-    out << indent() << "@classmethod" << endl << indent() << "def read(cls, iprot):" << endl;
+  string deftype = "";
+  if (gen_asyncio_) {
+    deftype = "async def ";
   } else {
-    indent(out) << "def read(self, iprot):" << endl;
+    deftype = "def ";
+  }
+  if (is_immutable(tstruct)) {
+    out << indent() << "@classmethod" << endl << indent() << deftype << "read(cls, iprot):" << endl;
+  } else {
+    indent(out) << deftype << "read(self, iprot):" << endl;
   }
   indent_up();
 
@@ -968,7 +973,11 @@ void t_py_generator::generate_py_struct_reader(ostream& out, t_struct* tstruct) 
   }
   indent_down();
 
-  indent(out) << "iprot.readStructBegin()" << endl;
+  indent(out);
+  if (gen_asyncio_) {
+    out << "await ";
+  }
+  out << "iprot.readStructBegin()" << endl;
   
   if (is_immutable(tstruct)) {
     for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
@@ -989,7 +998,11 @@ void t_py_generator::generate_py_struct_reader(ostream& out, t_struct* tstruct) 
   indent_up();
 
   // Read beginning field marker
-  indent(out) << "(fname, ftype, fid) = iprot.readFieldBegin()" << endl;
+  indent(out) << "(fname, ftype, fid) = ";
+  if (gen_asyncio_) {
+    out << "await ";
+  }
+  out << "iprot.readFieldBegin()" << endl;
 
   // Check for field STOP marker and break
   indent(out) << "if ftype == TType.STOP:" << endl;
@@ -1018,19 +1031,35 @@ void t_py_generator::generate_py_struct_reader(ostream& out, t_struct* tstruct) 
       generate_deserialize_field(out, *f_iter, "self.");
     }
     indent_down();
-    out << indent() << "else:" << endl << indent() << indent_str() << "iprot.skip(ftype)" << endl;
+    out << indent() << "else:" << endl << indent() << indent_str();
+    if (gen_asyncio_) {
+      out << "await ";
+    }
+    out << "iprot.skip(ftype)" << endl;
     indent_down();
   }
 
   // In the default case we skip the field
-  out << indent() << "else:" << endl << indent() << indent_str() << "iprot.skip(ftype)" << endl;
+  out << indent() << "else:" << endl << indent() << indent_str();
+  if (gen_asyncio_) {
+    out << "await ";
+  }
+  out << "iprot.skip(ftype)" << endl;
 
   // Read field end marker
-  indent(out) << "iprot.readFieldEnd()" << endl;
+  indent(out);
+  if (gen_asyncio_) {
+    out << "await ";
+  }
+  out << "iprot.readFieldEnd()" << endl;
 
   indent_down();
 
-  indent(out) << "iprot.readStructEnd()" << endl;
+  indent(out);
+  if (gen_asyncio_) {
+    out << "await ";
+  }
+  out << "iprot.readStructEnd()" << endl;
 
   if (is_immutable(tstruct)) {
     indent(out) << "return cls(" << endl;
@@ -2249,7 +2278,11 @@ void t_py_generator::generate_deserialize_field(ostream& out,
   } else if (type->is_container()) {
     generate_deserialize_container(out, type, name);
   } else if (type->is_base_type() || type->is_enum()) {
-    indent(out) << name << " = iprot.";
+    indent(out) << name << " = ";
+    if (gen_asyncio_) {
+      out << "await ";
+    }
+    out << "iprot.";
 
     if (type->is_base_type()) {
       t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
@@ -2303,10 +2336,17 @@ void t_py_generator::generate_deserialize_field(ostream& out,
  */
 void t_py_generator::generate_deserialize_struct(ostream& out, t_struct* tstruct, string prefix) {
   if (is_immutable(tstruct)) {
-    out << indent() << prefix << " = " << type_name(tstruct) << ".read(iprot)" << endl;
+    out << indent() << prefix << " = ";
+    if (gen_asyncio_) {
+      out << "await ";
+    }
+    out << type_name(tstruct) << ".read(iprot)" << endl;
   } else {
-    out << indent() << prefix << " = " << type_name(tstruct) << "()" << endl
-        << indent() << prefix << ".read(iprot)" << endl;
+    out << indent() << prefix << " = " << type_name(tstruct) << "()" << endl << indent();
+    if (gen_asyncio_) {
+      out << "await ";
+    }
+    out << prefix << ".read(iprot)" << endl;
   }
 }
 
@@ -2328,13 +2368,25 @@ void t_py_generator::generate_deserialize_container(ostream& out, t_type* ttype,
   // Declare variables, read header
   if (ttype->is_map()) {
     out << indent() << prefix << " = {}" << endl << indent() << "(" << ktype << ", " << vtype
-        << ", " << size << ") = iprot.readMapBegin()" << endl;
+        << ", " << size << ") = ";
+    if (gen_asyncio_) {
+      out << "await ";
+    }
+    out << "iprot.readMapBegin()" << endl;
   } else if (ttype->is_set()) {
     out << indent() << prefix << " = set()" << endl << indent() << "(" << etype << ", " << size
-        << ") = iprot.readSetBegin()" << endl;
+        << ") = ";
+    if (gen_asyncio_) {
+      out << "await ";
+    }
+    out << "iprot.readSetBegin()" << endl;
   } else if (ttype->is_list()) {
     out << indent() << prefix << " = []" << endl << indent() << "(" << etype << ", " << size
-        << ") = iprot.readListBegin()" << endl;
+        << ") = ";
+    if (gen_asyncio_) {
+      out << "await ";
+    }
+    out << "iprot.readListBegin()" << endl;
   }
 
   // For loop iterates over elements
@@ -2356,12 +2408,20 @@ void t_py_generator::generate_deserialize_container(ostream& out, t_type* ttype,
 
   // Read container end
   if (ttype->is_map()) {
-    indent(out) << "iprot.readMapEnd()" << endl;
+    indent(out);
+    if (gen_asyncio_) {
+      out << "await ";
+    }
+    out << "iprot.readMapEnd()" << endl;
     if (is_immutable(ttype)) {
       indent(out) << prefix << " = TFrozenDict(" << prefix << ")" << endl;
     }
   } else if (ttype->is_set()) {
-    indent(out) << "iprot.readSetEnd()" << endl;
+    indent(out);
+    if (gen_asyncio_) {
+      out << "await ";
+    }
+    out << "iprot.readSetEnd()" << endl;
     if (is_immutable(ttype)) {
       indent(out) << prefix << " = frozenset(" << prefix << ")" << endl;
     }
@@ -2369,7 +2429,11 @@ void t_py_generator::generate_deserialize_container(ostream& out, t_type* ttype,
     if (is_immutable(ttype)) {
       indent(out) << prefix << " = tuple(" << prefix << ")" << endl;
     }
-    indent(out) << "iprot.readListEnd()" << endl;
+    indent(out);
+    if (gen_asyncio_) {
+      out << "await ";
+    }
+    out << "iprot.readListEnd()" << endl;
   }
 }
 
