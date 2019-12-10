@@ -2889,6 +2889,7 @@ string t_py_generator::type_to_spec_args(t_type* ttype) {
 THRIFT_REGISTER_GENERATOR(
     py,
     "Python",
+    "    asyncio:         Generate code for use with asyncio.\n"
     "    zope.interface:  Generate code for use with zope.interface.\n"
     "    twisted:         Generate Twisted-friendly RPC services.\n"
     "    tornado:         Generate code for use with Tornado.\n"
