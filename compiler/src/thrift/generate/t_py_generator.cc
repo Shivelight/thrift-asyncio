@@ -115,6 +115,10 @@ public:
         // In python 3 strings are utf-8 by default.
         // Switching this to false to avoid useless checking.
         gen_utf8strings_ = false;
+        // Classic/old style class is removed, all class is new style
+        // class. A class don't need to explicitly inherits "object"
+        // in Python 3 just like the old style class in Python 2.
+        gen_newstyle_ = false;
       } else if( iter->first.compare("twisted") == 0) {
         gen_twisted_ = true;
         gen_zope_interface_ = true;
@@ -1255,7 +1259,7 @@ void t_py_generator::generate_service_interface(t_service* tservice) {
   } else {
     if (gen_zope_interface_) {
       extends_if = "(Interface)";
-    } else if (gen_newstyle_ || gen_dynamic_ || gen_tornado_ || gen_asyncio_) {
+    } else if (gen_newstyle_ || gen_dynamic_ || gen_tornado_) {
       extends_if = "(object)";
     }
   }
