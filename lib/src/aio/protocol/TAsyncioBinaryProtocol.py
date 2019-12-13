@@ -144,7 +144,7 @@ class TAsyncioBinaryProtocol(TBinaryProtocol):
             for _ in range(size):
                 await self.skip(ktype)
                 await self.skip(vtype)
-            self.readMapEnd()
+            await self.readMapEnd()
         elif ttype == TType.SET:
             (etype, size) = await self.readSetBegin()
             for _ in range(size):
