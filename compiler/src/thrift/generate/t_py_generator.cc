@@ -56,6 +56,7 @@ public:
 
     gen_newstyle_ = true;
     gen_utf8strings_ = true;
+    gen_docstring_ = true;
     gen_dynbase_ = false;
     gen_slots_ = false;
     gen_tornado_ = false;
@@ -79,6 +80,8 @@ public:
         pwarning(0, "utf8strings is enabled by default, so the option will be removed in the near future.\n");
       } else if( iter->first.compare("no_utf8strings") == 0) {
         gen_utf8strings_ = false;
+      } else if( iter->first.compare("no_docstring") == 0) {
+        gen_docstring_ = false;
       } else if( iter->first.compare("slots") == 0) {
         gen_slots_ = true;
       } else if( iter->first.compare("package_prefix") == 0) {
@@ -331,6 +334,11 @@ private:
    * True if strings should be encoded using utf-8.
    */
   bool gen_utf8strings_;
+  
+  /**
+   * True if we should generate docstring.
+   */
+  bool gen_docstring_;
 
   /**
    * specify generated file encoding
@@ -505,7 +513,9 @@ void t_py_generator::generate_enum(t_enum* tenum) {
   f_types_ << endl << endl << "class " << tenum->get_name() << (gen_newstyle_ ? "(object)" : "")
            << (gen_dynamic_ ? "(" + gen_dynbaseclass_ + ")" : "") << ":" << endl;
   indent_up();
-  generate_python_docstring(f_types_, tenum);
+  if (gen_docstring_) {
+    generate_python_docstring(f_types_, tenum);
+  }
 
   to_string_mapping << indent() << "_VALUES_TO_NAMES = {" << endl;
   from_string_mapping << indent() << "_NAMES_TO_VALUES = {" << endl;
@@ -774,7 +784,9 @@ void t_py_generator::generate_py_struct_definition(ostream& out,
   }
   out << ":" << endl;
   indent_up();
-  generate_python_docstring(out, tstruct);
+  if (gen_docstring_) {
+    generate_python_docstring(out, tstruct);
+  }
 
   out << endl;
 
@@ -1266,7 +1278,9 @@ void t_py_generator::generate_service_interface(t_service* tservice) {
 
   f_service_ << endl << endl << "class Iface" << extends_if << ":" << endl;
   indent_up();
-  generate_python_docstring(f_service_, tservice);
+  if (gen_docstring_) {
+    generate_python_docstring(f_service_, tservice);
+  }
   vector<t_function*> functions = tservice->get_functions();
   if (functions.empty()) {
     f_service_ << indent() << "pass" << endl;
@@ -1281,7 +1295,9 @@ void t_py_generator::generate_service_interface(t_service* tservice) {
       }
       f_service_ << indent() << "def " << function_signature(*f_iter, true) << ":" << endl;
       indent_up();
-      generate_python_docstring(f_service_, (*f_iter));
+      if (gen_docstring_) {
+        generate_python_docstring(f_service_, (*f_iter));
+      }
       f_service_ << indent() << "pass" << endl;
       indent_down();
     }
@@ -1321,7 +1337,9 @@ void t_py_generator::generate_service_client(t_service* tservice) {
     f_service_ << "class Client(" << extends_client << "Iface):" << endl;
   }
   indent_up();
-  generate_python_docstring(f_service_, tservice);
+  if (gen_docstring_) {
+    generate_python_docstring(f_service_, tservice);
+  }
 
   // Constructor function
   if (gen_twisted_) {
@@ -1419,7 +1437,9 @@ void t_py_generator::generate_service_client(t_service* tservice) {
     }
     indent(f_service_) << deftype << function_signature(*f_iter, false) << ":" << endl;
     indent_up();
-    generate_python_docstring(f_service_, (*f_iter));
+    if (gen_docstring_){
+      generate_python_docstring(f_service_, (*f_iter));
+    }
     if (gen_twisted_) {
       indent(f_service_) << "seqid = self._seqid = self._seqid + 1" << endl;
       indent(f_service_) << "self._reqs[seqid] = defer.Deferred()" << endl << endl;
@@ -2894,6 +2914,7 @@ THRIFT_REGISTER_GENERATOR(
     "    twisted:         Generate Twisted-friendly RPC services.\n"
     "    tornado:         Generate code for use with Tornado.\n"
     "    no_utf8strings:  Do not Encode/decode strings using utf8 in the generated code. Basically no effect for Python 3.\n"
+    "    no_docstring:    Do not generate docstring in the generated code.\n"
     "    coding=CODING:   Add file encoding declare in generated file.\n"
     "    slots:           Generate code using slots for instance members.\n"
     "    dynamic:         Generate dynamic code, less code generated but slower.\n"
