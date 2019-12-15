@@ -57,6 +57,7 @@ public:
     gen_newstyle_ = true;
     gen_utf8strings_ = true;
     gen_docstring_ = true;
+    gen_client_only_ = false;
     gen_dynbase_ = false;
     gen_slots_ = false;
     gen_tornado_ = false;
@@ -82,6 +83,8 @@ public:
         gen_utf8strings_ = false;
       } else if( iter->first.compare("no_docstring") == 0) {
         gen_docstring_ = false;
+      } else if( iter->first.compare("client_only") == 0) {
+        gen_client_only_ = true;
       } else if( iter->first.compare("slots") == 0) {
         gen_slots_ = true;
       } else if( iter->first.compare("package_prefix") == 0) {
@@ -339,6 +342,11 @@ private:
    * True if we should generate docstring.
    */
   bool gen_docstring_;
+
+  /**
+   * True if we should only generate service client without interface, server, and remote.
+   */
+  bool gen_client_only_;
 
   /**
    * specify generated file encoding
@@ -1202,11 +1210,16 @@ void t_py_generator::generate_service(t_service* tservice) {
   f_service_ << "all_structs = []" << endl;
 
   // Generate the three main parts of the service
-  generate_service_interface(tservice);
-  generate_service_client(tservice);
-  generate_service_server(tservice);
-  generate_service_helpers(tservice);
-  generate_service_remote(tservice);
+  if (gen_client_only_) {
+    generate_service_client(tservice);
+    generate_service_helpers(tservice);
+  } else {
+    generate_service_interface(tservice);
+    generate_service_client(tservice);
+    generate_service_server(tservice);
+    generate_service_helpers(tservice);
+    generate_service_remote(tservice);
+  }
 
   // Close service file
   f_service_ << "fix_spec(all_structs)" << endl
@@ -1316,7 +1329,7 @@ void t_py_generator::generate_service_client(t_service* tservice) {
   string extends_client = "";
   if (tservice->get_extends() != NULL) {
     extends = type_name(tservice->get_extends());
-    if (gen_zope_interface_) {
+    if (gen_zope_interface_ || gen_client_only_) {
       extends_client = "(" + extends + ".Client)";
     } else {
       extends_client = extends + ".Client, ";
@@ -1333,6 +1346,8 @@ void t_py_generator::generate_service_client(t_service* tservice) {
     f_service_ << "@implementer(Iface)" << endl
                << "class Client" << extends_client << ":" << endl
                << endl;
+  } else if (gen_client_only_) {
+    f_service_ << "class Client" << extends_client << ":" << endl;
   } else {
     f_service_ << "class Client(" << extends_client << "Iface):" << endl;
   }
@@ -2915,6 +2930,7 @@ THRIFT_REGISTER_GENERATOR(
     "    tornado:         Generate code for use with Tornado.\n"
     "    no_utf8strings:  Do not Encode/decode strings using utf8 in the generated code. Basically no effect for Python 3.\n"
     "    no_docstring:    Do not generate docstring in the generated code.\n"
+    "    client_only:     Generate code without interface, server, and remote."
     "    coding=CODING:   Add file encoding declare in generated file.\n"
     "    slots:           Generate code using slots for instance members.\n"
     "    dynamic:         Generate dynamic code, less code generated but slower.\n"
