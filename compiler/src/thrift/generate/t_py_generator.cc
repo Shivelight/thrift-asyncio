@@ -2930,7 +2930,7 @@ THRIFT_REGISTER_GENERATOR(
     "    tornado:         Generate code for use with Tornado.\n"
     "    no_utf8strings:  Do not Encode/decode strings using utf8 in the generated code. Basically no effect for Python 3.\n"
     "    no_docstring:    Do not generate docstring in the generated code.\n"
-    "    client_only:     Generate code without interface, server, and remote."
+    "    client_only:     Generate code without interface, server, and remote.\n"
     "    coding=CODING:   Add file encoding declare in generated file.\n"
     "    slots:           Generate code using slots for instance members.\n"
     "    dynamic:         Generate dynamic code, less code generated but slower.\n"
