@@ -246,6 +246,7 @@ literal_begin (['\"])
 "list"               { return tok_list;                 }
 "set"                { return tok_set;                  }
 "oneway"             { return tok_oneway;               }
+"noreturn"           { return tok_noreturn;             }
 "typedef"            { return tok_typedef;              }
 "struct"             { return tok_struct;               }
 "union"              { return tok_union;                }

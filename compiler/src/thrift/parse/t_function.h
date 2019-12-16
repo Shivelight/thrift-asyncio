@@ -64,6 +64,35 @@ public:
     }
   }
 
+  t_function(t_type* returntype,
+             std::string name,
+             t_struct* arglist,
+             t_struct* xceptions,
+             bool oneway = false,
+             bool noret = false)
+    : returntype_(returntype),
+      name_(name),
+      arglist_(arglist),
+      xceptions_(xceptions),
+      own_xceptions_(false),
+      oneway_(oneway),
+      noreturn_(noret) {
+    if (oneway_ && noreturn_) {
+      throw std::string("Oneway and noreturn are mutually exclusive.");
+    }
+    if (oneway_ && !xceptions_->get_members().empty()) {
+      throw std::string("Oneway methods can't throw exceptions.");
+    }
+    if (oneway_ && (!returntype_->is_void())) {
+      pwarning(1, "Oneway methods should return void.\n");
+    }
+    // noreturn is basically oneway with CALL message type,
+    // the code generator should handle the rest.
+    if (noreturn_) {
+      oneway_ = true;
+    }
+  }
+
   ~t_function() override {
     if (own_xceptions_)
       delete xceptions_;
@@ -79,6 +108,8 @@ public:
 
   bool is_oneway() const { return oneway_; }
 
+  bool is_noreturn() const { return noreturn_; }
+
   std::map<std::string, std::string> annotations_;
 
 private:
@@ -88,6 +119,7 @@ private:
   t_struct* xceptions_;
   bool own_xceptions_;
   bool oneway_;
+  bool noreturn_;
 };
 
 #endif

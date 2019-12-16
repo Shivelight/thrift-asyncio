@@ -153,6 +153,7 @@ const int struct_is_union = 1;
  * Function modifiers
  */
 %token tok_oneway
+%token tok_noreturn
 
 /**
  * Thrift language keywords
@@ -228,6 +229,7 @@ const int struct_is_union = 1;
 %type<tstruct>   Throws
 %type<tservice>  Extends
 %type<tbool>     Oneway
+%type<tbool>     NoReturn
 %type<tbool>     XsdAll
 %type<tbool>     XsdOptional
 %type<tbool>     XsdNillable
@@ -797,22 +799,32 @@ FunctionList:
     }
 
 Function:
-  CaptureDocText Oneway FunctionType tok_identifier '(' FieldList ')' Throws TypeAnnotations CommaOrSemicolonOptional
+  CaptureDocText NoReturn Oneway FunctionType tok_identifier '(' FieldList ')' Throws TypeAnnotations CommaOrSemicolonOptional
     {
-      validate_simple_identifier( $4);
-      $6->set_name(std::string($4) + "_args");
-      $$ = new t_function($3, $4, $6, $8, $2);
+      validate_simple_identifier( $5);
+      $7->set_name(std::string($5) + "_args");
+      $$ = new t_function($4, $5, $7, $9, $3, $2);
       if ($1 != NULL) {
         $$->set_doc($1);
       }
-      if ($9 != NULL) {
-        $$->annotations_ = $9->annotations_;
-        delete $9;
+      if ($10 != NULL) {
+        $$->annotations_ = $10->annotations_;
+        delete $10;
       }
     }
 
 Oneway:
   tok_oneway
+    {
+      $$ = true;
+    }
+|
+    {
+      $$ = false;
+    }
+
+NoReturn:
+  tok_noreturn
     {
       $$ = true;
     }

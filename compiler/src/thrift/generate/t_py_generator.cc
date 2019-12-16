@@ -1549,7 +1549,7 @@ void t_py_generator::generate_service_client(t_service* tservice) {
     indent_up();
 
     std::string argsname = (*f_iter)->get_name() + "_args";
-    std::string messageType = (*f_iter)->is_oneway() ? "TMessageType.ONEWAY" : "TMessageType.CALL";
+    std::string messageType = (*f_iter)->is_oneway() ^ (*f_iter)->is_noreturn() ? "TMessageType.ONEWAY" : "TMessageType.CALL";
 
     // Serialize the request header
     if (gen_twisted_ || gen_tornado_) {
