@@ -85,6 +85,16 @@ add_executable(thrift-compiler ${thrift-compiler_SOURCES})
 set_target_properties(thrift-compiler PROPERTIES RUNTIME_OUTPUT_DIRECTORY bin/)
 set_target_properties(thrift-compiler PROPERTIES OUTPUT_NAME thrift)
 
-target_link_libraries(thrift-compiler parse)
+option(BUILD_STATIC_EXECUTABLE "Build static executable" OFF)
+
+if (BUILD_STATIC_EXECUTABLE)
+    message("-- Building static executable")
+    set(staticFlag "-static")
+else()
+    message("-- Building dynamic executable")
+endif()
+
+target_link_libraries(thrift-compiler parse ${staticFlag})
+
 
 install(TARGETS thrift-compiler DESTINATION bin)

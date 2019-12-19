@@ -5,6 +5,7 @@ Stripped Thrift compiler with Python 3.6+ asyncio generator and custom options.
 <!-- TOC -->
 
 - [Python Generator Options](#python-generator-options)
+- [CMake Options](#cmake-options)
 - [Build on Unix-like System](#build-on-unix-like-system)
 - [Build on Windows](#build-on-windows)
 
@@ -14,11 +15,23 @@ Stripped Thrift compiler with Python 3.6+ asyncio generator and custom options.
 
 New options in addition to the original compiler:
 
-| Option       | description                                          |
+| Option       | Description                                          |
 |--------------|------------------------------------------------------|
 | asyncio      | Generate code for use with asyncio.                  | 
 | no_docstring | Do not generate docstring in the generated code.     | 
 | client_only  | Generate code without interface, server, and remote. |
+
+## CMake Options
+
+To use these options, you can use the `-D` argument. For example to build static executable:
+
+```
+cmake -DBUILD_STATIC_EXECUTABLE=ON
+```
+
+| Option                  | Description                                 | Default |
+|-------------------------|---------------------------------------------|---------|
+| BUILD_STATIC_EXECUTABLE | Build static executable instead of dynamic. | OFF     |
 
 
 ## Build on Unix-like System
