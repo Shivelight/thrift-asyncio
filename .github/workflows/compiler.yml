@@ -1,0 +1,43 @@
+name: Compiler CI/CD
+
+on:
+  push:
+    paths:
+    - 'compiler'
+
+jobs:
+  build_linux:
+    name: 'Build: Linux'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+
+    - name: Installing Dependencies
+      run: sudo apt install -y --no-install-recommends flex bison
+
+    - name: Building Linux x86_64
+      working-directory: ./compiler
+      run: |
+        mkdir cmake-x86_64 && cd cmake-x86_64
+        cmake -DBUILD_STATIC_EXECUTABLE=ON ..
+        make
+
+    - name: Building Linux i386
+      working-directory: ./compiler
+      run: |
+        mkdir cmake-i386 && cd cmake-i386
+        cmake -DBUILD_STATIC_EXECUTABLE=ON -DCMAKE_CXX_FLAGS=-m32 ..
+        make
+
+    - name: Uploading Linux x86_64 Artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: "linux-x86_64"
+        path: "compiler/cmake-x86_64/bin"
+
+    - name: Uploading Linux i386 Artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: "linux-i386"
+        path: "compiler/cmake-i386/bin"
