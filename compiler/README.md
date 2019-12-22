@@ -6,6 +6,7 @@ Stripped Thrift compiler with Python 3.6+ asyncio generator and custom options.
 
 - [Python Generator Options](#python-generator-options)
 - [CMake Options](#cmake-options)
+- [Latest Build Artifacts](#latest-build-artifacts)
 - [Build on Unix-like System](#build-on-unix-like-system)
 - [Build on Windows](#build-on-windows)
 
@@ -33,6 +34,10 @@ cmake -DBUILD_STATIC_EXECUTABLE=ON
 |-------------------------|---------------------------------------------|---------|
 | BUILD_STATIC_EXECUTABLE | Build static executable instead of dynamic. | OFF     |
 
+
+## Latest Build Artifacts
+
+You can download latest build artifacts from [actions](https://github.com/Shivelight/thrift-asyncio/actions). The workflow runs everytime there is a change to the compiler.
 
 ## Build on Unix-like System
 
