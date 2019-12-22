@@ -1,4 +1,4 @@
-name: Compiler CI/CD
+name: Compiler Artifacts
 
 on:
   push:
@@ -7,14 +7,14 @@ on:
 
 jobs:
   build_linux:
-    name: 'Build: Linux'
+    name: 'Building: Linux'
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v1
 
     - name: Installing Dependencies
-      run: sudo apt install -y --no-install-recommends flex bison
+      run: sudo apt-get install -y --no-install-recommends flex bison gcc-multilib g++-multilib
 
     - name: Building Linux x86_64
       working-directory: ./compiler
