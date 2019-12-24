@@ -3,7 +3,7 @@ name: Compiler Artifacts
 on:
   push:
     paths:
-    - 'compiler'
+    - 'compiler/**'
 
 jobs:
   build_linux:
