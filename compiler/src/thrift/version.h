@@ -24,6 +24,6 @@
 #pragma once
 #endif // _MSC_VER
 
-#define THRIFT_VERSION "0.14.0-9c6c6bf@Shivelight.0.2.0"
+#define THRIFT_VERSION "0.14.0-9c6c6bf@Shivelight.0.2.1"
 
 #endif // _THRIFT_VERSION_H_
