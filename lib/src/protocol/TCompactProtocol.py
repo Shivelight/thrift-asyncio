@@ -407,7 +407,7 @@ class TCompactProtocol(TProtocolBase):
                                  self.state)
 
     readByte = reader(_readByte)
-    __readI16 = _readZigZag
+    _readI16 = _readZigZag
     readI16 = reader(_readZigZag)
     readI32 = reader(_readZigZag)
     readI64 = reader(_readZigZag)
