@@ -147,7 +147,7 @@ static PyMethodDef ThriftFastBinaryMethods[] = {
 #if PY_MAJOR_VERSION >= 3
 
 static struct PyModuleDef ThriftFastBinaryDef = {PyModuleDef_HEAD_INIT,
-                                                 "thrift.protocol.fastbinary",
+                                                 "thriftx.protocol.fastbinary",
                                                  NULL,
                                                  0,
                                                  ThriftFastBinaryMethods,
@@ -191,7 +191,7 @@ void initfastbinary() {
 #if PY_MAJOR_VERSION >= 3
       PyModule_Create(&ThriftFastBinaryDef);
 #else
-      Py_InitModule("thrift.protocol.fastbinary", ThriftFastBinaryMethods);
+      Py_InitModule("thriftx.protocol.fastbinary", ThriftFastBinaryMethods);
 #endif
   if (module == NULL)
     INITERROR;

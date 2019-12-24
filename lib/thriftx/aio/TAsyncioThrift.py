@@ -1,4 +1,4 @@
-from thrift.Thrift import TApplicationException, TType
+from thriftx.Thrift import TApplicationException, TType
 
 
 class TAsyncioApplicationException(TApplicationException):

@@ -275,7 +275,7 @@ class TBinaryProtocolAccelerated(TBinaryProtocol):
         fallback = kwargs.pop('fallback', True)
         super(TBinaryProtocolAccelerated, self).__init__(*args, **kwargs)
         try:
-            from thrift.protocol import fastbinary
+            from thriftx.protocol import fastbinary
         except ImportError:
             if not fallback:
                 raise

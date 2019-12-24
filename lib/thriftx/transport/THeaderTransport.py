@@ -20,11 +20,11 @@
 import struct
 import zlib
 
-from thrift.compat import BufferIO, byte_index
-from thrift.protocol.TBinaryProtocol import TBinaryProtocol
-from thrift.protocol.TCompactProtocol import TCompactProtocol, readVarint, writeVarint
-from thrift.Thrift import TApplicationException
-from thrift.transport.TTransport import (
+from thriftx.compat import BufferIO, byte_index
+from thriftx.protocol.TBinaryProtocol import TBinaryProtocol
+from thriftx.protocol.TCompactProtocol import TCompactProtocol, readVarint, writeVarint
+from thriftx.Thrift import TApplicationException
+from thriftx.transport.TTransport import (
     CReadableTransport,
     TMemoryBuffer,
     TTransportBase,

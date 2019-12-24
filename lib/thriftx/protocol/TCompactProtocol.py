@@ -461,7 +461,7 @@ class TCompactProtocolAccelerated(TCompactProtocol):
         fallback = kwargs.pop('fallback', True)
         super(TCompactProtocolAccelerated, self).__init__(*args, **kwargs)
         try:
-            from thrift.protocol import fastbinary
+            from thriftx.protocol import fastbinary
         except ImportError:
             if not fallback:
                 raise

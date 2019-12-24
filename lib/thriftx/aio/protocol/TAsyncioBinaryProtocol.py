@@ -1,8 +1,8 @@
 from struct import unpack
 
-from thrift.protocol.TBinaryProtocol import TBinaryProtocol, TBinaryProtocolFactory
-from thrift.protocol.TProtocol import TProtocolException
-from thrift.Thrift import TType
+from thriftx.protocol.TBinaryProtocol import TBinaryProtocol, TBinaryProtocolFactory
+from thriftx.protocol.TProtocol import TProtocolException
+from thriftx.Thrift import TType
 
 
 class TAsyncioBinaryProtocol(TBinaryProtocol):

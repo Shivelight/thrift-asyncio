@@ -1,4 +1,4 @@
-from thrift.transport import TTransport
+from thriftx.transport import TTransport
 
 
 class TAsyncioTransportBase(TTransport.TTransportBase):

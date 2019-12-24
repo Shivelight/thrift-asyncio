@@ -22,9 +22,9 @@ import logging
 import os
 import threading
 
-from thrift.protocol import TBinaryProtocol
-from thrift.protocol.THeaderProtocol import THeaderProtocolFactory
-from thrift.transport import TTransport
+from thriftx.protocol import TBinaryProtocol
+from thriftx.protocol.THeaderProtocol import THeaderProtocolFactory
+from thriftx.transport import TTransport
 
 logger = logging.getLogger(__name__)
 

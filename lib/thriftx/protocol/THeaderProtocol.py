@@ -17,11 +17,11 @@
 # under the License.
 #
 
-from thrift.protocol.TBinaryProtocol import TBinaryProtocolAccelerated
-from thrift.protocol.TCompactProtocol import TCompactProtocolAccelerated
-from thrift.protocol.TProtocol import TProtocolBase, TProtocolException, TProtocolFactory
-from thrift.Thrift import TApplicationException, TMessageType
-from thrift.transport.THeaderTransport import THeaderTransport, THeaderSubprotocolID, THeaderClientType
+from thriftx.protocol.TBinaryProtocol import TBinaryProtocolAccelerated
+from thriftx.protocol.TCompactProtocol import TCompactProtocolAccelerated
+from thriftx.protocol.TProtocol import TProtocolBase, TProtocolException, TProtocolFactory
+from thriftx.Thrift import TApplicationException, TMessageType
+from thriftx.transport.THeaderTransport import THeaderTransport, THeaderSubprotocolID, THeaderClientType
 
 
 PROTOCOLS_BY_ID = {

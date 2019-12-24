@@ -17,7 +17,7 @@
 # under the License.
 #
 
-from thrift.transport import TTransport
+from thriftx.transport import TTransport
 
 
 class TBase(object):

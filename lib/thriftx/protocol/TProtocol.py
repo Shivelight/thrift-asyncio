@@ -17,8 +17,8 @@
 # under the License.
 #
 
-from thrift.Thrift import TException, TType, TFrozenDict
-from thrift.transport.TTransport import TTransportException
+from thriftx.Thrift import TException, TType, TFrozenDict
+from thriftx.transport.TTransport import TTransportException
 from ..compat import binary_to_str, str_to_binary
 
 import six

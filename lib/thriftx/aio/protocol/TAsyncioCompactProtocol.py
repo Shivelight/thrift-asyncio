@@ -1,7 +1,7 @@
 from struct import unpack
 
-from thrift.protocol.TProtocol import TType, TProtocolException
-from thrift.protocol.TCompactProtocol import (
+from thriftx.protocol.TProtocol import TType, TProtocolException
+from thriftx.protocol.TCompactProtocol import (
     CompactType,
     TCompactProtocol,
     reader,

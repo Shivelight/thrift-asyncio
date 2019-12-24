@@ -28,7 +28,7 @@ from twisted.internet.threads import deferToThread
 from twisted.protocols import basic
 from twisted.web import server, resource, http
 
-from thrift.transport import TTransport
+from thriftx.transport import TTransport
 
 
 class TMessageSenderTransport(TTransport.TTransportBase):

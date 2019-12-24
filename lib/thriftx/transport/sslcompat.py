@@ -20,7 +20,7 @@
 import logging
 import sys
 
-from thrift.transport.TTransport import TTransportException
+from thriftx.transport.TTransport import TTransportException
 
 logger = logging.getLogger(__name__)
 

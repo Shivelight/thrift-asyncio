@@ -1,1 +1,1 @@
-include src/ext/*
+include thriftx/ext/*

@@ -36,7 +36,7 @@ if 'vagrant' in str(os.environ):
     except AttributeError:
         pass
 
-include_dirs = ['src']
+include_dirs = ['thriftx']
 if sys.platform == 'win32':
     include_dirs.append('compat/win32')
     ext_errors = (CCompilerError, DistutilsExecError, DistutilsPlatformError, IOError)
@@ -66,12 +66,12 @@ def run_setup(with_binary):
     if with_binary:
         extensions = dict(
             ext_modules=[
-                Extension('thrift.protocol.fastbinary',
+                Extension('thriftx.protocol.fastbinary',
                           sources=[
-                              'src/ext/module.cpp',
-                              'src/ext/types.cpp',
-                              'src/ext/binary.cpp',
-                              'src/ext/compact.cpp',
+                              'thriftx/ext/module.cpp',
+                              'thriftx/ext/types.cpp',
+                              'thriftx/ext/binary.cpp',
+                              'thriftx/ext/compact.cpp',
                           ],
                           include_dirs=include_dirs,
                           )
@@ -89,7 +89,7 @@ def run_setup(with_binary):
     tornado_deps = ['tornado>=4.0']
     twisted_deps = ['twisted']
 
-    setup(name='thrift',
+    setup(name='thriftx',
           version='0.14.0',
           description='Python bindings for the Apache Thrift RPC system',
           author='Apache Thrift Developers',
@@ -104,15 +104,14 @@ def run_setup(with_binary):
               'all': ssl_deps + tornado_deps + twisted_deps,
           },
           packages=[
-              'thrift',
-              'thrift.protocol',
-              'thrift.transport',
-              'thrift.server',
-              'thrift.aio',
-              'thrift.aio.protocol',
-              'thrift.aio.transport',
+              'thriftx',
+              'thriftx.protocol',
+              'thriftx.transport',
+              'thriftx.server',
+              'thriftx.aio',
+              'thriftx.aio.protocol',
+              'thriftx.aio.transport',
           ],
-          package_dir={'thrift': 'src'},
           classifiers=[
               'Development Status :: 5 - Production/Stable',
               'Environment :: Console',

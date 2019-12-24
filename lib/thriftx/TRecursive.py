@@ -15,7 +15,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-from thrift.Thrift import TType
+from thriftx.Thrift import TType
 
 TYPE_IDX = 1
 SPEC_ARGS_IDX = 3

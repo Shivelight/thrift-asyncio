@@ -21,9 +21,9 @@ import ssl
 
 from six.moves import BaseHTTPServer
 
-from thrift.Thrift import TMessageType
-from thrift.server import TServer
-from thrift.transport import TTransport
+from thriftx.Thrift import TMessageType
+from thriftx.server import TServer
+from thriftx.transport import TTransport
 
 
 class ResponseException(Exception):

@@ -17,9 +17,9 @@
 # under the License.
 #
 
-from thrift.Thrift import TProcessor, TMessageType
-from thrift.protocol import TProtocolDecorator, TMultiplexedProtocol
-from thrift.protocol.TProtocol import TProtocolException
+from thriftx.Thrift import TProcessor, TMessageType
+from thriftx.protocol import TProtocolDecorator, TMultiplexedProtocol
+from thriftx.protocol.TProtocol import TProtocolException
 
 
 class TMultiplexedProcessor(TProcessor):

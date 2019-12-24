@@ -18,7 +18,7 @@
 #
 
 from struct import pack, unpack
-from thrift.Thrift import TException
+from thriftx.Thrift import TException
 from ..compat import BufferIO
 
 

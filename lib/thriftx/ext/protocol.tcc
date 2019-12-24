@@ -789,7 +789,7 @@ PyObject* ProtocolBase<Impl>::decodeValue(TType type, PyObject* typeargs) {
 
     if (parsedargs.immutable) {
       if (!ThriftModule) {
-        ThriftModule = PyImport_ImportModule("thrift.Thrift");
+        ThriftModule = PyImport_ImportModule("thriftx.Thrift");
       }
       if (!ThriftModule) {
         return NULL;
