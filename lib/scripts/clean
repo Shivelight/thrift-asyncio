@@ -1,0 +1,15 @@
+#!/bin/sh
+
+if [ -d 'build' ]; then
+    rm -r build
+fi
+
+if [ -d 'dist' ]; then
+    rm -r dist
+fi
+
+if [ -d 'thriftx.egg-info' ]; then
+    rm -r thriftx.egg-info
+fi
+
+find ./thriftx -type d -name __pycache__ -o -name '*.so' -exec rm -r {} \+
