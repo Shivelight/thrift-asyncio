@@ -33,11 +33,11 @@ jobs:
     - name: Uploading Linux x86_64 Artifact
       uses: actions/upload-artifact@v1
       with:
-        name: "linux-x86_64"
+        name: "thrift-linux-x86_64"
         path: "compiler/cmake-x86_64/bin"
 
     - name: Uploading Linux i386 Artifact
       uses: actions/upload-artifact@v1
       with:
-        name: "linux-i386"
+        name: "thrift-linux-i386"
         path: "compiler/cmake-i386/bin"
